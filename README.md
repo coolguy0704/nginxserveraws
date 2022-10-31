@@ -1,2 +1,2 @@
-# mattermostserveraws
-Deploying mattermost server in aws cloud environment
+# nginxserveraws
+Deploying nginx server in aws cloud environment
