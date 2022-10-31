@@ -1,6 +1,6 @@
 resource "aws_key_pair" "aws-key" {
     key_name = "aws-key"
-    public_key = "${var.PUBLIC_KEY_PATH}"
+    public_key = "${file(var.PUBLIC_KEY_PATH)}"
 }
 
 resource "aws_instance" "nginxserver" {
@@ -8,7 +8,7 @@ resource "aws_instance" "nginxserver" {
     instance_type = "${var.INSTANCE_TYPE}"
     subnet_id = "${aws_subnet.nginx-public-subnet-1.id}"
     vpc_security_group_ids = ["${aws_security_group.allow-ssh-http.id}"]
-    key_name = "${aws_key_pair.aws-key.id}"
+    key_name = "${aws_key_pair.aws-key.key_name}"
     provisioner "file" {
         source = "nginx.sh"
         destination = "/tmp/nginx.sh"
@@ -23,6 +23,6 @@ resource "aws_instance" "nginxserver" {
       type = "ssh"
       user = "ec2-user"
       host = self.public_ip
-      private_key = "${var.PRIVATE_KEY_PATH}"
+      private_key = "${file(var.PRIVATE_KEY_PATH)}"
     }
 }
